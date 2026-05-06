@@ -5,17 +5,189 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Gerifit | Dashboard Mensal</title>
   <style>
-    :root{--bg:#08111d;--panel:#0f1b2d;--panel2:#13233a;--line:rgba(255,255,255,.08);--text:#ebf3ff;--muted:#a8b7cf;--good:#22c55e;--warn:#f59e0b;--bad:#ef4444;--ink:#0f172a}
-    *{box-sizing:border-box} body{margin:0;font-family:Inter,Arial,sans-serif;background:linear-gradient(180deg,#07101b,#0b1424 45%,#edf4fb 45%,#f8fbff 100%);color:var(--text)}
-    .wrap{max-width:1240px;margin:0 auto;padding:24px}.top{display:flex;justify-content:space-between;gap:16px;align-items:flex-start}.title{font-size:34px;font-weight:800;margin:6px 0}.sub{color:var(--muted);max-width:820px;line-height:1.5}
-    .select{background:var(--panel);color:#fff;border:1px solid var(--line);padding:12px 14px;border-radius:14px}.hero{margin-top:18px;display:grid;grid-template-columns:repeat(5,1fr);gap:14px}.card{background:linear-gradient(180deg,var(--panel),var(--panel2));border:1px solid var(--line);border-radius:20px;padding:18px}.label{font-size:11px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted)}.value{font-size:28px;font-weight:800;margin-top:8px}.hint{margin-top:6px;font-size:12px;color:#cfdaee}
-    .section{margin-top:18px;background:#f8fbff;color:var(--ink);border-radius:24px;padding:22px;box-shadow:0 12px 34px rgba(15,23,42,.08)} .section h2{margin:0 0 14px;font-size:24px}.grid2{display:grid;grid-template-columns:1.05fr 1fr;gap:16px}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-    .panel{background:#fff;border:1px solid #e2e8f0;border-radius:18px;padding:18px}.kpi{background:#f8fafc;border:1px solid #e2e8f0;border-radius:16px;padding:14px}.kpi strong{display:block;font-size:24px;margin-top:8px}.meter{height:10px;background:#e5e7eb;border-radius:999px;overflow:hidden;margin-top:10px}.fill{height:100%}.good{background:var(--good)}.warn{background:var(--warn)}.bad{background:var(--bad)}
-    table{width:100%;border-collapse:collapse} th,td{padding:10px 8px;border-bottom:1px solid #e5e7eb;text-align:left;font-size:14px} th{font-size:12px;color:#64748b;text-transform:uppercase}
-    input,select,button{font:inherit}.field{display:flex;flex-direction:column;gap:6px}.field input,.field select{padding:12px;border:1px solid #d7e0ea;border-radius:12px;background:#fff}.form-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.btn{background:#0f172a;color:#fff;border:none;border-radius:12px;padding:12px 16px;font-weight:700;cursor:pointer}.muted{color:#475569}
-    .service-card{background:#fff;border:1px solid #e2e8f0;border-radius:18px;padding:16px}.service-card h3{margin:0 0 10px}
-    @media (max-width:980px){.hero,.grid2,.grid3,.form-grid{grid-template-columns:1fr 1fr}.top{flex-direction:column}.title{font-size:28px}}
-    @media (max-width:640px){.hero,.grid2,.grid3,.form-grid{grid-template-columns:1fr}.wrap{padding:14px}}
+    :root{
+      --bg:#08111d;
+      --panel:#0f1b2d;
+      --panel2:#13233a;
+      --line:rgba(255,255,255,.08);
+      --text:#ebf3ff;
+      --muted:#a8b7cf;
+      --good:#22c55e;
+      --warn:#f59e0b;
+      --bad:#ef4444;
+      --ink:#0f172a;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:Inter,Arial,sans-serif;
+      background:linear-gradient(180deg,#07101b,#0b1424 45%,#edf4fb 45%,#f8fbff 100%);
+      color:var(--text);
+    }
+    .wrap{
+      max-width:1240px;
+      margin:0 auto;
+      padding:24px;
+    }
+    .top{
+      display:flex;
+      justify-content:space-between;
+      gap:16px;
+      align-items:flex-start;
+    }
+    .title{
+      font-size:34px;
+      font-weight:800;
+      margin:6px 0;
+    }
+    .sub{
+      color:var(--muted);
+      max-width:820px;
+      line-height:1.5;
+    }
+    .select{
+      background:var(--panel);
+      color:#fff;
+      border:1px solid var(--line);
+      padding:12px 14px;
+      border-radius:14px;
+    }
+    .hero{
+      margin-top:18px;
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:14px;
+    }
+    .card{
+      background:linear-gradient(180deg,var(--panel),var(--panel2));
+      border:1px solid var(--line);
+      border-radius:20px;
+      padding:18px;
+    }
+    .label{
+      font-size:11px;
+      text-transform:uppercase;
+      letter-spacing:.12em;
+      color:var(--muted);
+    }
+    .value{
+      font-size:28px;
+      font-weight:800;
+      margin-top:8px;
+    }
+    .hint{
+      margin-top:6px;
+      font-size:12px;
+      color:#cfdaee;
+    }
+    .section{
+      margin-top:18px;
+      background:#f8fbff;
+      color:var(--ink);
+      border-radius:24px;
+      padding:22px;
+      box-shadow:0 12px 34px rgba(15,23,42,.08);
+    }
+    .section h2{
+      margin:0 0 14px;
+      font-size:24px;
+    }
+    .grid2{
+      display:grid;
+      grid-template-columns:1.05fr 1fr;
+      gap:16px;
+    }
+    .grid3{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:14px;
+    }
+    .panel{
+      background:#fff;
+      border:1px solid #e2e8f0;
+      border-radius:18px;
+      padding:18px;
+    }
+    .kpi{
+      background:#f8fafc;
+      border:1px solid #e2e8f0;
+      border-radius:16px;
+      padding:14px;
+    }
+    .kpi strong{
+      display:block;
+      font-size:24px;
+      margin-top:8px;
+    }
+    .meter{
+      height:10px;
+      background:#e5e7eb;
+      border-radius:999px;
+      overflow:hidden;
+      margin-top:10px;
+    }
+    .fill{height:100%}
+    .good{background:var(--good)}
+    .warn{background:var(--warn)}
+    .bad{background:var(--bad)}
+    table{
+      width:100%;
+      border-collapse:collapse;
+    }
+    th,td{
+      padding:10px 8px;
+      border-bottom:1px solid #e5e7eb;
+      text-align:left;
+      font-size:14px;
+    }
+    th{
+      font-size:12px;
+      color:#64748b;
+      text-transform:uppercase;
+    }
+    input,select,button{font:inherit}
+    .field{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+    }
+    .field input,.field select{
+      padding:12px;
+      border:1px solid #d7e0ea;
+      border-radius:12px;
+      background:#fff;
+    }
+    .form-grid{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:12px;
+    }
+    .btn{
+      background:#0f172a;
+      color:#fff;
+      border:none;
+      border-radius:12px;
+      padding:12px 16px;
+      font-weight:700;
+      cursor:pointer;
+    }
+    .muted{
+      color:#475569;
+    }
+    .notice{
+      margin-top:12px;
+      font-size:13px;
+      color:#64748b;
+    }
+    @media (max-width:980px){
+      .hero,.grid2,.grid3,.form-grid{grid-template-columns:1fr 1fr}
+      .top{flex-direction:column}
+      .title{font-size:28px}
+    }
+    @media (max-width:640px){
+      .hero,.grid2,.grid3,.form-grid{grid-template-columns:1fr}
+      .wrap{padding:14px}
+    }
   </style>
 </head>
 <body>
@@ -24,7 +196,7 @@
       <div>
         <div style="font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:#7dd3fc">Dashboard Comercial + Google Ads</div>
         <div class="title">Gerifit | Painel Mensal</div>
-        <div class="sub">Puxa mídia da planilha e permite preencher comercial no próprio dashboard. Antes de usar, troque a constante <b>API_URL</b> pelo link do seu Google Apps Script publicado como Web App.</div>
+        <div class="sub">Dashboard mensal com leitura automática da planilha e preenchimento comercial no próprio painel.</div>
       </div>
       <select id="monthSelect" class="select"></select>
     </div>
@@ -62,6 +234,7 @@
             <li>Taxa de fechamento = fechamentos / agendamentos</li>
             <li>CPL = valor gasto / contatos</li>
           </ul>
+          <div class="notice">Metas: resposta 70%, agendamento 20%, fechamento 50%, CPL até R$ 25.</div>
         </div>
       </div>
     </div>
@@ -94,11 +267,15 @@
     const API_URL = 'https://script.google.com/macros/s/AKfycbxsW7cDj9ScjfTZo-snP5HwWwxVN4qACjSgqt0WVXCENPnttIVXLXyfIw1pl6Gq7NZd/exec';
     let state = null;
 
-    async function loadData(month='') {
-      if (!API_URL || API_URL.includes('COLE_AQUI')) return;
-      const res = await fetch(`${API_URL}?month=${encodeURIComponent(month)}`);
-      state = await res.json();
-      render();
+    async function loadData(month = '') {
+      try {
+        const res = await fetch(`${API_URL}?month=${encodeURIComponent(month)}`);
+        state = await res.json();
+        render();
+      } catch (err) {
+        console.error(err);
+        alert('Não consegui carregar os dados do dashboard.');
+      }
     }
 
     function render() {
@@ -113,7 +290,7 @@
 
     function renderMonthSelect() {
       const sel = document.getElementById('monthSelect');
-      sel.innerHTML = state.availableMonths.map(m => `<option ${m===state.month?'selected':''}>${m}</option>`).join('');
+      sel.innerHTML = state.availableMonths.map(m => `<option ${m === state.month ? 'selected' : ''}>${m}</option>`).join('');
       sel.onchange = () => loadData(sel.value);
     }
 
@@ -142,15 +319,15 @@
         ['CPL', money(g.cpl), g.cpl, 25, true]
       ];
       document.getElementById('goalCards').innerHTML = items.map(([label,show,val,target,invert]) => {
-        const status = invert ? (val <= target ? 'good' : val <= target*1.2 ? 'warn' : 'bad') : (val >= target ? 'good' : val >= target*0.8 ? 'warn' : 'bad');
-        const width = invert ? Math.min((target/Math.max(val,1))*100,100) : Math.min((val/target)*100,100);
+        const status = invert ? (val <= target ? 'good' : val <= target * 1.2 ? 'warn' : 'bad') : (val >= target ? 'good' : val >= target * 0.8 ? 'warn' : 'bad');
+        const width = invert ? Math.min((target / Math.max(val,1)) * 100, 100) : Math.min((val / target) * 100, 100);
         return `<div class="kpi"><div class="label">${label}</div><strong>${show}</strong><div class="meter"><div class="fill ${status}" style="width:${width}%"></div></div></div>`;
       }).join('');
     }
 
     function renderCampaigns() {
       const wrap = document.getElementById('campaignCards');
-      wrap.innerHTML = state.campaigns.map(c => `<div class="service-card"><h3>${c.Campanha || c.campanha || '-'}</h3><table><tr><td>Valor gasto</td><td>${money(c.ValorGasto || c.valorGasto || 0)}</td></tr><tr><td>Impressões</td><td>${int(c.Impressoes || c.impressoes || 0)}</td></tr><tr><td>Cliques</td><td>${int(c.Cliques || c.cliques || 0)}</td></tr><tr><td>Contatos</td><td>${int(c.Contatos || c.contatos || 0)}</td></tr><tr><td>CPL</td><td>${money(c.CPL || c.cpl || 0)}</td></tr></table></div>`).join('');
+      wrap.innerHTML = state.campaigns.map(c => `<div class="panel"><h3>${c.Campanha || '-'}</h3><table><tr><td>Valor gasto</td><td>${money(c.ValorGasto || 0)}</td></tr><tr><td>Impressões</td><td>${int(c.Impressoes || 0)}</td></tr><tr><td>Cliques</td><td>${int(c.Cliques || 0)}</td></tr><tr><td>Contatos</td><td>${int(c.Contatos || 0)}</td></tr><tr><td>CPL</td><td>${money(c.CPL || 0)}</td></tr></table></div>`).join('');
     }
 
     function fillCommercialForm() {
@@ -196,12 +373,23 @@
     }
 
     async function postAction(action, payload) {
-      await fetch(API_URL, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ action, payload }) });
+      try {
+        await fetch(API_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action, payload })
+        });
+      } catch (err) {
+        console.error(err);
+        alert('Não consegui salvar os dados.');
+      }
     }
 
-    const money = n => (Number(n)||0).toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
-    const int = n => (Number(n)||0).toLocaleString('pt-BR');
-    const percent = n => `${((Number(n)||0)*100).toFixed(2).replace('.',',')}%`;
+    const money = n => (Number(n) || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    const int = n => (Number(n) || 0).toLocaleString('pt-BR');
+    const percent = n => `${((Number(n) || 0) * 100).toFixed(2).replace('.', ',')}%`;
+
+    loadData();
   </script>
 </body>
 </html>
