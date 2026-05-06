@@ -380,7 +380,7 @@
         <div>
           <div class="eyebrow">Dashboard Gerencial + Comercial</div>
           <h1>Gerifit | Visão Mensal</h1>
-          <p>Leitura consolidada de mídia, metas de eficiência e operação comercial do mês em uma visualização mais limpa, organizada e separada da área de preenchimento.</p>
+          <p>Leitura consolidada de mídia, metas de eficiência e operação comercial com agrupamento automático por mês a partir da data e separação das campanhas de VD e Consultório.</p>
         </div>
         <div class="hero-actions">
           <span class="pill">Meta de CPL ≤ R$ 25</span>
@@ -397,7 +397,7 @@
             <div class="hero-mini"><span>Agendamentos</span><strong id="heroAppointments">0</strong></div>
             <div class="hero-mini"><span>Taxa de fechamento</span><strong id="heroClosingRate">0,00%</strong></div>
           </div>
-          <div class="footer-note">Separação mensal feita pelo campo <strong>Mes</strong> na base. Cada aba usa o mesmo padrão: por exemplo, <strong>Abril 2026</strong>, <strong>Maio 2026</strong>, <strong>Junho 2026</strong>.</div>
+          <div class="footer-note">Separação mensal feita automaticamente pela <strong>data</strong> da base. Exemplo: linhas de <strong>06/02/2026</strong> entram em <strong>Fevereiro 2026</strong>; linhas de <strong>01/03/2026</strong> entram em <strong>Março 2026</strong>.</div>
         </div>
       </div>
     </section>
@@ -469,7 +469,7 @@
 
             <div>
               <h2 style="margin:0 0 8px;font-size:20px">Preenchimento mensal do comercial</h2>
-              <p class="panel-sub" style="margin-bottom:16px">Tudo o que for salvo aqui fica vinculado ao mês selecionado no topo, usando o campo <strong>Mes</strong> da base.</p>
+              <p class="panel-sub" style="margin-bottom:16px">Tudo o que for salvo aqui fica vinculado ao mês selecionado no topo. A referência mensal é derivada automaticamente da data base do registro.</p>
               <div class="form-grid">
                 <div class="field"><label>Respostas qualificadas</label><input id="qualificadas" type="number"></div>
                 <div class="field"><label>Respostas desqualificadas</label><input id="desqualificadas" type="number"></div>
@@ -488,7 +488,7 @@
               <div class="form-grid">
                 <div class="field"><label>Nome do paciente</label><input id="paciente"></div>
                 <div class="field"><label>Data agendada</label><input id="dataAgendada" type="date"></div>
-                <div class="field"><label>Tipo de serviço</label><select id="tipoServico"><option>Consulta</option><option>Visita domiciliar</option></select></div>
+                <div class="field"><label>Tipo de serviço</label><select id="tipoServico"><option>Consultório</option><option>VD</option></select></div>
                 <div class="field"><label>Compareceu?</label><select id="compareceu"><option>Sim</option><option>Não</option></select></div>
                 <div class="field"><label>Valor</label><input id="valorAgendamento" type="number" step="0.01"></div>
                 <div class="field"><label>Observação</label><input id="observacao"></div>
@@ -554,7 +554,7 @@
         ['Contatos', int(m.contatos), 'leads recebidos'],
         ['CPL', money(m.cpl), 'meta até R$ 25'],
         ['Resp. qualificadas', int(c.respostasQualificadas), 'retorno útil do comercial'],
-        ['Resp. desqualificadas', int(c.respostasDesqualificadas), 'retorno fora do perfil'],
+        ['Fechamentos', int(c.fechamentos), 'vendas/agendamentos convertidos'],
         ['Valor fechado', money(c.valorFechamentos), 'receita confirmada no mês']
       ];
 
@@ -636,6 +636,7 @@
     async function saveCommercial() {
       const payload = {
         Mes: state.month,
+        DataReferencia: firstDayFromLabel(state.month),
         RespostasQualificadas: +document.getElementById('qualificadas').value || 0,
         RespostasDesqualificadas: +document.getElementById('desqualificadas').value || 0,
         Agendamentos: +document.getElementById('agendamentos').value || 0,
@@ -677,6 +678,13 @@
     const money = n => (Number(n) || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
     const int = n => (Number(n) || 0).toLocaleString('pt-BR');
     const percent = n => `${((Number(n) || 0) * 100).toFixed(2).replace('.', ',')}%`;
+    function firstDayFromLabel(label) {
+      const months = {janeiro:'01',fevereiro:'02','março':'03',marco:'03',abril:'04',maio:'05',junho:'06',julho:'07',agosto:'08',setembro:'09',outubro:'10',novembro:'11',dezembro:'12'};
+      const parts = String(label || '').split(' ');
+      const mm = months[(parts[0] || '').toLowerCase()];
+      const yyyy = parts[1] || '';
+      return mm && yyyy ? `01/${mm}/${yyyy}` : '';
+    }
 
     loadData();
   </script>
