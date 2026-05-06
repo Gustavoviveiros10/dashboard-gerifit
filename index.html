@@ -90,7 +90,7 @@
     .hero-band{
       margin-top:24px;
       display:grid;
-      grid-template-columns:2fr 1fr;
+      grid-template-columns:1fr;
       gap:16px;
     }
 
@@ -397,11 +397,7 @@
             <div class="hero-mini"><span>Agendamentos</span><strong id="heroAppointments">0</strong></div>
             <div class="hero-mini"><span>Taxa de fechamento</span><strong id="heroClosingRate">0,00%</strong></div>
           </div>
-        </div>
-        <div class="hero-card">
-          <div class="small">Eficiência de resposta</div>
-          <div class="big" id="heroResponseRate">0,00%</div>
-          <div class="footer-note">Com base em respostas qualificadas + desqualificadas sobre contatos gerados.</div>
+          <div class="footer-note">Separação mensal feita pelo campo <strong>Mes</strong> na base. Cada aba usa o mesmo padrão: por exemplo, <strong>Abril 2026</strong>, <strong>Maio 2026</strong>, <strong>Junho 2026</strong>.</div>
         </div>
       </div>
     </section>
@@ -467,13 +463,13 @@
         <section class="panel">
           <div class="ops-layout">
             <div class="ops-banner">
-              <strong>Área do comercial</strong>
-              <p>Esta seção fica separada da visão principal do dashboard para o time preencher dados sem bagunçar a leitura gerencial.</p>
+              <strong>O comercial preenche esta seção</strong>
+              <p>Aqui entra só o que não vem automático da mídia: respostas qualificadas, respostas desqualificadas, agendamentos, fechamentos, valor dos fechamentos e novos agendamentos do mês selecionado.</p>
             </div>
 
             <div>
-              <h2 style="margin:0 0 8px;font-size:20px">Preenchimento mensal</h2>
-              <p class="panel-sub" style="margin-bottom:16px">Use estes campos para atualizar os dados manuais do comercial no mês selecionado.</p>
+              <h2 style="margin:0 0 8px;font-size:20px">Preenchimento mensal do comercial</h2>
+              <p class="panel-sub" style="margin-bottom:16px">Tudo o que for salvo aqui fica vinculado ao mês selecionado no topo, usando o campo <strong>Mes</strong> da base.</p>
               <div class="form-grid">
                 <div class="field"><label>Respostas qualificadas</label><input id="qualificadas" type="number"></div>
                 <div class="field"><label>Respostas desqualificadas</label><input id="desqualificadas" type="number"></div>
@@ -546,7 +542,6 @@
       document.getElementById('heroClosings').textContent = int(c.fechamentos || 0);
       document.getElementById('heroAppointments').textContent = int(c.agendamentos || 0);
       document.getElementById('heroClosingRate').textContent = percent(g.taxaFechamento || 0);
-      document.getElementById('heroResponseRate').textContent = percent(g.taxaResposta || 0);
     }
 
     function renderSummary() {
