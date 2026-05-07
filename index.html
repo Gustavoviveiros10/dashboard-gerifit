@@ -460,14 +460,14 @@
           <div id="goalCards" class="goal-list"></div>
         </section>
 
-        <section class="panel">
+        <section class="panel" id="commercialPanel">
           <div class="ops-layout">
             <div class="ops-banner">
-              <strong>O comercial preenche esta seção</strong>
-              <p>Aqui entra só o que não vem automático da mídia: respostas qualificadas, respostas desqualificadas, agendamentos, fechamentos, valor dos fechamentos e novos agendamentos do mês selecionado.</p>
+              <strong id="commercialTitle">O comercial preenche esta seção</strong>
+              <p id="commercialText">Aqui entra só o que não vem automático da mídia: respostas qualificadas, respostas desqualificadas, agendamentos, fechamentos, valor dos fechamentos e novos agendamentos do mês selecionado.</p>
             </div>
 
-            <div>
+            <div id="commercialFormBlock">
               <h2 style="margin:0 0 8px;font-size:20px">Preenchimento mensal do comercial</h2>
               <p class="panel-sub" style="margin-bottom:16px">Tudo o que for salvo aqui fica vinculado ao mês selecionado no topo. A referência mensal é derivada automaticamente da data base do registro.</p>
               <div class="form-grid">
@@ -482,7 +482,7 @@
               </div>
             </div>
 
-            <div>
+            <div id="appointmentFormBlock">
               <h2 style="margin:0 0 8px;font-size:20px">Adicionar agendamento</h2>
               <p class="panel-sub" style="margin-bottom:16px">Cadastre um novo agendamento sem sair do painel.</p>
               <div class="form-grid">
@@ -552,11 +552,15 @@
         ['Impressões', int(m.impressoes), 'volume entregue'],
         ['Cliques', int(m.cliques), 'interações geradas'],
         ['Contatos', int(m.contatos), 'leads recebidos'],
-        ['CPL', money(m.cpl), 'meta até R$ 25'],
-        ['Resp. qualificadas', int(c.respostasQualificadas), 'retorno útil do comercial'],
-        ['Fechamentos', int(c.fechamentos), 'vendas/agendamentos convertidos'],
-        ['Valor fechado', money(c.valorFechamentos), 'receita confirmada no mês']
+        ['CPL', money(m.cpl), 'meta até R$ 25']
       ];
+      if (c.hasData) {
+        cards.push(
+          ['Resp. qualificadas', int(c.respostasQualificadas), 'retorno útil do comercial'],
+          ['Fechamentos', int(c.fechamentos), 'vendas/agendamentos convertidos'],
+          ['Valor fechado', money(c.valorFechamentos), 'receita confirmada no mês']
+        );
+      }
 
       document.getElementById('summary').innerHTML = cards.map(x => `
         <div class="kpi">
@@ -569,11 +573,16 @@
 
     function renderGoals() {
       const g = state.metrics;
-      const items = [
+      const c = state.commercial;
+      const items = c.hasData ? [
         ['Taxa de resposta', percent(g.taxaResposta), g.taxaResposta, 0.70, false, 'Meta: 70%'],
         ['Taxa de agendamento', percent(g.taxaAgendamento), g.taxaAgendamento, 0.20, false, 'Meta: 20%'],
         ['Taxa de fechamento', percent(g.taxaFechamento), g.taxaFechamento, 0.50, false, 'Meta: 50%'],
         ['CPL', money(g.cpl), g.cpl, 25, true, 'Meta: até R$ 25']
+      ] : [
+        ['CPL', money(g.cpl), g.cpl, 25, true, 'Meta: até R$ 25'],
+        ['Contatos', int(state.media.contatos), state.media.contatos, Math.max(state.media.contatos || 1, 1), false, 'leads do mês'],
+        ['Cliques', int(state.media.cliques), state.media.cliques, Math.max(state.media.cliques || 1, 1), false, 'tráfego do mês']
       ];
 
       document.getElementById('goalCards').innerHTML = items.map(([label,show,val,target,invert,targetLabel]) => {
@@ -612,6 +621,14 @@
 
     function fillCommercialForm() {
       const c = state.commercial;
+      const hasCommercial = !!c.hasData;
+      document.getElementById('commercialFormBlock').style.display = hasCommercial ? '' : 'none';
+      document.getElementById('appointmentFormBlock').style.display = hasCommercial ? '' : 'none';
+      document.getElementById('commercialTitle').textContent = hasCommercial ? 'O comercial preenche esta seção' : 'Modo mídia apenas';
+      document.getElementById('commercialText').textContent = hasCommercial
+        ? 'Aqui entra só o que não vem automático da mídia: respostas qualificadas, respostas desqualificadas, agendamentos, fechamentos, valor dos fechamentos e novos agendamentos do mês selecionado.'
+        : 'Por enquanto o dashboard está mostrando só os dados da aba Midia. Quando você criar Comercial e Agendamentos, esta área volta automaticamente.';
+      if (!hasCommercial) return;
       document.getElementById('qualificadas').value = c.respostasQualificadas || 0;
       document.getElementById('desqualificadas').value = c.respostasDesqualificadas || 0;
       document.getElementById('agendamentos').value = c.agendamentos || 0;
@@ -621,6 +638,10 @@
 
     function renderAppointments() {
       const tbody = document.querySelector('#appointmentsTable tbody');
+      if (!state.agendamentos || !state.agendamentos.length) {
+        tbody.innerHTML = `<tr><td colspan="6" style="color:#64748b">Sem agendamentos lançados por enquanto.</td></tr>`;
+        return;
+      }
       tbody.innerHTML = (state.agendamentos || []).map(a => `
         <tr>
           <td>${a.NomePaciente || ''}</td>
